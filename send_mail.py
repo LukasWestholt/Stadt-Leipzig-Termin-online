@@ -3,16 +3,25 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from socket import gaierror
 import time
-import config
 
-fromaddr = config.fromaddr
-pw = config.pw
-smtp_host = config.smtp_host
-imap_host = config.imap_host
-history_gaierror = 0
+try:
+    import config
+    DO_SEND = True
+except ImportError:
+    DO_SEND = False
+
+if DO_SEND:
+    import config
+    fromaddr = config.fromaddr
+    pw = config.pw
+    smtp_host = config.smtp_host
+    imap_host = config.imap_host
+    history_gaierror = 0
 
 
 def send_email(se_subject, se_body, se_to):
+    if not DO_SEND:
+        return False
     print("send_email start")
     msg = MIMEMultipart()
     msg['From'] = fromaddr
@@ -35,3 +44,4 @@ def send_email(se_subject, se_body, se_to):
         server.login(fromaddr, pw)
         server.sendmail(fromaddr, se_to, msg.as_string())
         server.quit()
+        return True

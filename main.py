@@ -37,7 +37,7 @@ def site(url, browser, results=None):
             correct_id = ""
             for web_element in list_of_web_elements:
                 label_element = web_element.find_element_by_tag_name('label')
-                if str(label_element.text) == "Anmeldung Wohnsitz bei Zuzug nach Leipzig":
+                if str(label_element.text) == SEARCH_FOR:
                     correct_id = label_element.get_attribute("for")
                     break
             if correct_id == "":
@@ -96,7 +96,7 @@ def find(best_option):
 
 def time_window(item):
     timestamp = item[2]
-    return int(STOP_TIME_WINDOW.timestamp()) > timestamp / 1000 > int(START_TIME_WINDOW.timestamp())
+    return int(STOP_TIME_WINDOW_EXCLUDED.timestamp()) > timestamp / 1000 > int(START_TIME_WINDOW_EXCLUDED.timestamp())
 
 
 def place(item):
@@ -111,13 +111,13 @@ def sendmail(item):
 
 
 URL = 'https://tnv.leipzig.de/tnv/'
-START_TIME_WINDOW = datetime(2021, 10, 1, 0, 0)
-STOP_TIME_WINDOW = datetime(2021, 10, 14, 0, 0)
+SEARCH_FOR = "Anmeldung Wohnsitz bei Zuzug nach Leipzig"
+START_TIME_WINDOW_EXCLUDED = datetime(2021, 10, 1, 0, 0)
+STOP_TIME_WINDOW_EXCLUDED = datetime(2021, 10, 7, 0, 0)
 SEND_TO = ["lukaswestholt@yahoo.de"]
+SEARCH_INTERVAL = 60
 
 best = False
 while True:
     best = find(best)
-    time.sleep(60)
-
-input("Press enter to exit ;)")
+    time.sleep(SEARCH_INTERVAL)
