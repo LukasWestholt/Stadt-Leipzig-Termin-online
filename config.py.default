@@ -1,0 +1,4 @@
+fromaddr = "mail@mail.com"  # Wer soll die Emails versenden?
+pw = "pw"  # Wie ist das Email-Konto Passwort?
+smtp_host = "smtp.mail.com"  # SMTP
+imap_host = "imap.mail.com"  # IMAP
